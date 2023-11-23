@@ -50,12 +50,6 @@ class Settings extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('Change Password'),
-              onTap: () {
-                // Handle change password logic
-              },
-            ),
-            ListTile(
               title: Text('Logout'),
               onTap: () {
                 // Handle logout logic

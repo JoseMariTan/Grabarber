@@ -1,4 +1,6 @@
+// Favorites.dart
 import 'package:flutter/material.dart';
+import 'FavoriteBarbers.dart';
 
 class PopularB extends StatefulWidget {
   @override
@@ -15,7 +17,6 @@ class _PopularBState extends State<PopularB> {
   ];
 
   List<bool> isFavoriteList = List.generate(5, (index) => false);
-
   List<bool> isInfoVisibleList = List.generate(5, (index) => false);
 
   @override
@@ -39,7 +40,7 @@ class _PopularBState extends State<PopularB> {
                 child: Text(
                   "Popular Barbers",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 24,
                   ),
                 ),
@@ -71,6 +72,7 @@ class _PopularBState extends State<PopularB> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     IconButton(
                                       iconSize: 40,
@@ -84,6 +86,7 @@ class _PopularBState extends State<PopularB> {
                                         setState(() {
                                           isFavoriteList[index] =
                                               !isFavoriteList[index];
+                                          _handleFavorite(index);
                                           _showMessage(
                                               isFavoriteList[index]
                                                   ? 'Added to Favorites'
@@ -149,6 +152,17 @@ class _PopularBState extends State<PopularB> {
         ),
       ),
     );
+  }
+
+  void _handleFavorite(int index) {
+    String barberImage = popularBarbersImages[index];
+    if (isFavoriteList[index]) {
+      // Add to favorites
+      FavoriteBarbers.favorites.add(barberImage);
+    } else {
+      // Remove from favorites
+      FavoriteBarbers.favorites.remove(barberImage);
+    }
   }
 
   void _showMessage(String message, BuildContext context) {

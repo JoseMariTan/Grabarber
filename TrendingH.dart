@@ -1,4 +1,6 @@
+// TrendingH.dart
 import 'package:flutter/material.dart';
+import 'FavoriteStyles.dart';
 
 class TrendingH extends StatefulWidget {
   @override
@@ -86,6 +88,7 @@ class _TrendingHState extends State<TrendingH> {
                                         setState(() {
                                           isFavoriteList[index] =
                                               !isFavoriteList[index];
+                                          _handleFavorite(index);
                                           _showMessage(
                                             isFavoriteList[index]
                                                 ? 'Added to Favorites'
@@ -163,6 +166,17 @@ class _TrendingHState extends State<TrendingH> {
         ),
       ),
     );
+  }
+
+  void _handleFavorite(int index) {
+    String hairImage = trendingHairstylesImages[index];
+    if (isFavoriteList[index]) {
+      // Add to favorites
+      FavoriteStyles.favorites.add(hairImage);
+    } else {
+      // Remove from favorites
+      FavoriteStyles.favorites.remove(hairImage);
+    }
   }
 
   void _showMessage(String message, BuildContext context) {

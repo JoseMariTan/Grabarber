@@ -126,7 +126,10 @@ class _HomepageState extends State<Homepage> {
 class HomeTab extends StatelessWidget {
   final List<String> carouselImages = [
     "https://i.imgur.com/xpiswhK.png",
-    "https://i.imgur.com/abcdefg.png",
+    "https://ih0.redbubble.net/image.488440244.1153/raf,360x360,075,t,fafafa:ca443f4786.jpg",
+    "https://d2zdpiztbgorvt.cloudfront.net/region1/us/493883/biz_photo/cdabe8dca5b2436887e355b3d5c5d7-coleman-da-barber-primo-s-barb-biz-photo-dc16662e869d474c8bd036bb9199a1-booksy.jpeg?size=640x427",
+    "https://patch.com/img/cdn20/users/790386/20180801/105900/styles/raw/public/processed_images/barber_prank-1533135179-8777.jpg",
+    "https://images.squarespace-cdn.com/content/v1/5d52feb1aa6f990001929012/e89c181b-dd09-420e-8e80-06aa47a5a37a/todecacho.png",
   ];
 
   @override
@@ -142,16 +145,18 @@ class HomeTab extends StatelessWidget {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.symmetric(horizontal: 5.0),
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                      ),
-                      child: Image.network(
-                        item,
-                        fit: BoxFit.cover,
-                      ),
-                    );
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.amber,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            item,
+                            fit: BoxFit.cover,
+                          ),
+                        ));
                   },
                 );
               }).toList(),

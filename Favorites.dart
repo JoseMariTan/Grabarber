@@ -9,36 +9,16 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: Color(0xFFE0E0E0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 10),
-                // Favorite Barbers Section
-                _buildFavoriteSection(
-                  "Favorite Barbers",
-                  FavoriteBarbers.favorites,
-                  _removeFavoriteBarber,
-                ),
-                SizedBox(height: 25),
-                // Favorite Styles Section
-                _buildFavoriteSection(
-                  "Favorite Hairstyles",
-                  FavoriteStyles.favorites,
-                  _removeFavoriteStyle,
-                ),
-                SizedBox(height: 25),
-              ],
-            ),
-          ),
-        ),
-      ),
+  int _currentIndex = 0;
+
+  Widget _buildSelectedFavoriteSection() {
+    String title =
+        _currentIndex == 0 ? "Favorite Barbers" : "Favorite Haircuts";
+
+    return _buildFavoriteSection(
+      "",
+      _currentIndex == 0 ? FavoriteBarbers.favorites : FavoriteStyles.favorites,
+      _currentIndex == 0 ? _removeFavoriteBarber : _removeFavoriteStyle,
     );
   }
 
@@ -49,22 +29,40 @@ class _FavoritesState extends State<Favorites> {
   ) {
     return Column(
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
+        Container(
+          color: Theme.of(context)
+              .scaffoldBackgroundColor, // Use Scaffold background color
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                color: Theme.of(context)
+                    .scaffoldBackgroundColor, // Blend with Scaffold background color
+                fontSize: 18,
+              ),
+            ),
           ),
         ),
         favorites.isEmpty
-            ? Center(
-                child: Text(
-                  "You currently have no $title",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
+            ? Container(
+                height: 250,
+                child: Center(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 30.0), // Adjust top padding
+                    child: Opacity(
+                      opacity: 0.7, // Set opacity
+                      child: Text(
+                        "No Selected Favorites",
+                        style: TextStyle(
+                          color: Colors.grey, // Set text color to gray
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
               )
             : Container(
@@ -89,7 +87,7 @@ class _FavoritesState extends State<Favorites> {
                             IconButton(
                               icon: Icon(
                                 Icons.remove_circle,
-                                color: Colors.black,
+                                color: Colors.red,
                               ),
                               onPressed: () {
                                 removeFavorite(index);
@@ -102,7 +100,47 @@ class _FavoritesState extends State<Favorites> {
                   },
                 ),
               ),
+        SizedBox(height: 25),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          // BottomNavigationBar wrapped in a Container
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            padding: EdgeInsets.symmetric(vertical: 5),
+            child: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              elevation: 4,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people),
+                  label: 'Barbers',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.face),
+                  label: 'Haircuts',
+                ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: _buildSelectedFavoriteSection(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
