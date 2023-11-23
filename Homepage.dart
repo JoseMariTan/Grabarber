@@ -6,6 +6,7 @@ import 'GetStartedPage.dart';
 import 'PopularB.dart';
 import 'TrendingH.dart';
 import 'Settings.dart';
+import 'Favorites.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -286,9 +287,7 @@ class HomeTab extends StatelessWidget {
 class FavoritesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Favorites Tab Content'),
-    );
+    return Favorites();
   }
 }
 
