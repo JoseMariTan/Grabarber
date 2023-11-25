@@ -27,10 +27,8 @@ class SignInScreenState extends State<SignInScreen> {
   final AuthService _authService = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  //AuthService _authService = AuthService();
-  //TextEditingController _emailController = TextEditingController();
-  //TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  String _errorMessage = ""; // New variable to store error message
 
   void _handleSignIn() async {
     try {
@@ -45,38 +43,61 @@ class SignInScreenState extends State<SignInScreen> {
         if (_authService.getCurrentUser() != null) {
           print("User logged in successfully: $email");
 
-          // Navigate to the NextScreen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => Homepage()),
+          // Navigate to the Homepage with fade animation
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return Homepage();
+              },
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                const begin = 0.0; // Starting opacity
+                const end = 1.0; // Ending opacity
+                const curve = Curves.easeInOut; // Animation curve
+
+                var opacityTween = Tween<double>(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
+
+                var opacityAnimation = animation.drive(opacityTween);
+
+                return FadeTransition(
+                  opacity: opacityAnimation,
+                  child: child,
+                );
+              },
+            ),
           );
         } else {
           // Handle the case where getCurrentUser returns null
-          print("User is null after login");
+          _showErrorMessage("Invalid username or password");
         }
       } else {
         // Handle the case where email or password is empty
-        print("Email or password is empty");
+        _showErrorMessage("Email or password is empty");
       }
     } catch (e) {
       // Handle login error
-      print("Error during login: $e");
+      _showErrorMessage("Error during login: $e");
     }
   }
 
-  bool _isPasswordVisible = false;
-  // Declare the _isPasswordVisible variable here
+  // Function to update the error message
+  void _showErrorMessage(String message) {
+    setState(() {
+      _errorMessage = "Invalid Username or Password";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          const Color(0xFF212121), // Change the background color here
+      backgroundColor: const Color(0xFF212121),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
             'assets/GRABARBERWHITE.png',
-            width: 300, // Adjust the width as needed
+            width: 300,
           ),
           const SizedBox(height: 24.0),
           Container(
@@ -84,32 +105,29 @@ class SignInScreenState extends State<SignInScreen> {
             child: TextFormField(
               controller: _emailController,
               style: const TextStyle(
-                color: Color(0xffffffff), // Change the text color here
+                color: Color(0xffffffff),
               ),
               decoration: const InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(
                   color: Color(0xffffffff),
-                  fontSize:
-                      14.0, // Change the label (floating hint) text color here
+                  fontSize: 14.0,
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Color(
-                        0xffffffff), // Change the border color when the field is not focused
+                    color: Color(0xffffffff),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Color(
-                        0xffe3c5ad), // Change the border color when the field is focused
+                    color: Color(0xffe3c5ad),
                   ),
                 ),
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(left: 4.0),
                   child: Icon(
                     Icons.person,
-                    color: Color(0xffffffff), // Change the icon color here
+                    color: Color(0xffffffff),
                   ),
                 ),
               ),
@@ -164,17 +182,18 @@ class SignInScreenState extends State<SignInScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 24.0),
+          const SizedBox(height: 5.0),
+          // Display the error message in red font
+          Text(
+            _errorMessage,
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 14.0,
+            ),
+          ),
+          const SizedBox(height: 5.0),
           ElevatedButton(
             onPressed: _handleSignIn,
-            /*onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Homepage(),
-                ),
-              );
-            },*/
             child: const Text(
               'Login',
               style: TextStyle(
@@ -195,8 +214,7 @@ class SignInScreenState extends State<SignInScreen> {
                   MaterialStateProperty.all<Color>(const Color(0xff331b1b)),
             ),
           ),
-          const SizedBox(height: 8.0),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
@@ -224,13 +242,13 @@ class SignInScreenState extends State<SignInScreen> {
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
-                            return SignUpPage(); // Replace SignUpPage with your actual destination page
+                            return SignUpPage();
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            const begin = 0.0; // Starting opacity
-                            const end = 1.0; // Ending opacity
-                            const curve = Curves.easeInOut; // Animation curve
+                            const begin = 0.0;
+                            const end = 1.0;
+                            const curve = Curves.easeInOut;
 
                             var opacityTween =
                                 Tween<double>(begin: begin, end: end)

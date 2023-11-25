@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends StatefulWidget {
+  @override
+  _SettingsState createState() => _SettingsState();
+}
+
+class _SettingsState extends State<Settings> {
+  bool _notificationsEnabled = true; // State variable for notification toggle
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +31,11 @@ class Settings extends StatelessWidget {
               title: Text('Notifications'),
               subtitle: Text('Enable or disable notifications'),
               trailing: Switch(
-                value:
-                    true, // Replace with your logic for handling notifications
+                value: _notificationsEnabled,
                 onChanged: (value) {
+                  setState(() {
+                    _notificationsEnabled = value;
+                  });
                   // Handle switch change
                 },
               ),

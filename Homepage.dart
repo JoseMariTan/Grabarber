@@ -75,15 +75,71 @@ class _HomepageState extends State<Homepage> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Settings()),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return Settings();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin =
+                          Offset(-1.0, 0.0); // Updated for left-to-right slide
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      var offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               },
             ),
             ListTile(
               title: Text('Logout'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()));
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return SignInScreen();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin =
+                          Offset(-1.0, 0.0); // Starting position from the left
+                      const end =
+                          Offset(0.0, 0.0); // Ending position at the center
+                      const curve = Curves.easeInOut; // Animation curve
+                      const duration = Duration(
+                          milliseconds:
+                              500); // Animation duration in milliseconds
+
+                      var slideTween = Tween<Offset>(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      var slideAnimation = animation.drive(
+                        TweenSequence(
+                          <TweenSequenceItem<Offset>>[
+                            TweenSequenceItem(
+                              tween: slideTween,
+                              weight: 1.0,
+                            ),
+                          ],
+                        ),
+                      );
+
+                      return SlideTransition(
+                        position: slideAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
               },
             ),
           ],

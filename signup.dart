@@ -16,12 +16,16 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _confirmPasswordController =
       TextEditingController(); // Step 1
 
+  String _errorMessage = ""; // Added to store error message
+
   void _handleSignUp() async {
     try {
       if (_passwordController.text != _confirmPasswordController.text) {
         // Check if passwords match
         // You can display an error message or throw an exception
-        print("Passwords do not match");
+        setState(() {
+          _errorMessage = "Passwords do not match";
+        });
         return;
       }
 
@@ -30,13 +34,34 @@ class _SignUpPageState extends State<SignUpPage> {
         password: _passwordController.text,
       );
 
-      // Handle successful signup, navigate to the next screen, etc.
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Homepage()),
+      // Navigate to the Homepage with fade animation
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Homepage();
+          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = 0.0; // Starting opacity
+            const end = 1.0; // Ending opacity
+            const curve = Curves.easeInOut; // Animation curve
+
+            var opacityTween = Tween<double>(begin: begin, end: end)
+                .chain(CurveTween(curve: curve));
+
+            var opacityAnimation = animation.drive(opacityTween);
+
+            return FadeTransition(
+              opacity: opacityAnimation,
+              child: child,
+            );
+          },
+        ),
       );
     } catch (e) {
       // Handle the signup error (display an error message, etc.)
+      setState(() {
+        _errorMessage = "Invalid Email or Password";
+      });
       print("Error during signup: $e");
     }
   }
@@ -186,7 +211,13 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          const SizedBox(height: 24.0),
+          const SizedBox(height: 5.0),
+          // Display error message in red font
+          Text(
+            _errorMessage,
+            style: TextStyle(color: Colors.red),
+          ),
+          const SizedBox(height: 5.0),
           ElevatedButton(
             onPressed: _handleSignUp,
             child: const Text('Sign Up',
@@ -207,7 +238,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   MaterialStateProperty.all<Color>(const Color(0xff331b1b)),
             ),
           ),
-          const SizedBox(height: 8.0),
           const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
