@@ -7,6 +7,7 @@ import 'PopularB.dart';
 import 'TrendingH.dart';
 import 'Settings.dart';
 import 'Favorites.dart';
+import 'UserProfile.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -67,6 +68,31 @@ class _HomepageState extends State<Homepage> {
               title: Text('Profile'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return UserProfile();
+                    },
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin =
+                          Offset(-1.0, 0.0); // Updated for left-to-right slide
+                      const end = Offset.zero;
+                      const curve = Curves.easeInOut;
+
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      var offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
               },
             ),
             ListTile(
