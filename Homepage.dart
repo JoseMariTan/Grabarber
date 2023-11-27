@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:helloworld/BSelection.dart';
 import 'package:helloworld/signin.dart';
-import 'GetStartedPage.dart';
+import 'package:helloworld/GetStartedPage.dart';
+//import 'GetStartedPage.dart';
 import 'PopularB.dart';
 import 'TrendingH.dart';
 import 'Settings.dart';
 import 'Favorites.dart';
 import 'UserProfile.dart';
+import 'BHistory.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -265,7 +267,7 @@ class HomeTab extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          /*SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Container(
@@ -297,73 +299,152 @@ class HomeTab extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
           SizedBox(height: 20),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+
+          // Clickable Widget for "Popular Barbers"
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      PopularB(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    const begin = 0.0;
+                    const end = 1.0;
+                    const curve = Curves.easeInOut;
+
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+
+                    var fadeAnimation = animation.drive(tween);
+
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
             child: Container(
               width: 300.0,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PopularB(),
+              height: 150.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    "https://www.inquirer.com/resizer/nhWtS_iVnoOC8-K4DsOEEdh1Jd0=/760x507/smart/filters:format(webp)/cloudfront-us-east-1.images.arcpublishing.com/pmn/L5ISY2WSSBFQTPY3VRXXK5LL4U.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 300.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.7),
+                          Colors.transparent
+                        ],
+                      ),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFFD700),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    child: Center(
+                      child: Text(
+                        "Popular Barbers",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                  minimumSize:
-                      Size(double.infinity, 60), // Increased button height
-                ),
-                child: Text(
-                  "Popular Barbers",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'OpenSans', // Updated font
-                  ),
-                ),
+                ],
               ),
             ),
           ),
+
           SizedBox(height: 20),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      TrendingH(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    const begin = 0.0;
+                    const end = 1.0;
+                    const curve = Curves.easeInOut;
+
+                    var tween = Tween(begin: begin, end: end)
+                        .chain(CurveTween(curve: curve));
+
+                    var fadeAnimation = animation.drive(tween);
+
+                    return FadeTransition(
+                      opacity: fadeAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
             child: Container(
               width: 300.0,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TrendingH(),
+              height: 150.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    "https://content.latest-hairstyles.com/wp-content/uploads/modern-mullet-haircuts-for-men.jpg",
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 300.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.7),
+                          Colors.transparent
+                        ],
+                      ),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFFFD700),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    child: Center(
+                      child: Text(
+                        "Trending Hairstyles",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                  minimumSize:
-                      Size(double.infinity, 60), // Increased button height
-                ),
-                child: Text(
-                  "Trending Hairstyles",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Lobster', // Updated font
-                  ),
-                ),
+                ],
               ),
             ),
           ),
+
           SizedBox(height: 25),
         ],
       ),
@@ -381,9 +462,7 @@ class FavoritesTab extends StatelessWidget {
 class HistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('History Tab Content'),
-    );
+    return BHistory();
   }
 }
 
