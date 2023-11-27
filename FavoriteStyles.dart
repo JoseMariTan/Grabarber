@@ -38,37 +38,13 @@ class _FavoriteStylesState extends State<FavoriteStyles> {
                         ),
                       )
                     : Container(
-                        height: 500,
+                        height: 200,
                         child: ListView.builder(
-                          scrollDirection: Axis.vertical,
+                          scrollDirection: Axis.horizontal,
                           itemCount: FavoriteStyles.favorites.length,
                           itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Stack(
-                                  alignment: Alignment.topRight,
-                                  children: [
-                                    Image.network(
-                                      FavoriteStyles.favorites[index],
-                                      width: double.infinity,
-                                      height: 500.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.remove_circle,
-                                        color: Colors.black,
-                                      ),
-                                      onPressed: () {
-                                        _removeFavorite(index);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
+                            return _buildFavoriteItem(
+                                FavoriteStyles.favorites[index]);
                           },
                         ),
                       ),
@@ -81,9 +57,42 @@ class _FavoriteStylesState extends State<FavoriteStyles> {
     );
   }
 
-  void _removeFavorite(int index) {
+  Widget _buildFavoriteItem(String image) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Image.network(
+              image,
+              width: 300.0,
+              height: 200.0,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: IconButton(
+                icon: Icon(
+                  Icons.remove_circle,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  _removeFavorite(image);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _removeFavorite(String image) {
     setState(() {
-      FavoriteStyles.favorites.removeAt(index);
+      FavoriteStyles.favorites.remove(image);
     });
   }
 }

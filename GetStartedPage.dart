@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:helloworld/get_user_name.dart';
 import 'SetUpProfile.dart';
 
 class GetStartedPage extends StatefulWidget {
@@ -7,7 +10,21 @@ class GetStartedPage extends StatefulWidget {
 }
 
 class _GetStartedPage extends State<GetStartedPage> {
+  final user = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
+
+  //document IDs
+  List<String> docIDs = [];
+
+  //get docIDs
+  Future getDocId() async {
+    await FirebaseFirestore.instance.collection('users').get().then(
+          (snapshot) => snapshot.docs.forEach((document) {
+            print(document.reference);
+            docIDs.add(document.reference.id);
+          }),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {

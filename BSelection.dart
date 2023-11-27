@@ -210,12 +210,37 @@ class _BSelection extends State<BSelection> {
                                           75, 2, 0, 0),
                                       child: OutlinedButton(
                                         onPressed: () {
-                                          // Navigate to the next page when the button is pressed
+                                          // Navigate to the next page with a custom page transition
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BProfile()),
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  BProfile(),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                const begin = Offset(1.0,
+                                                    0.0); // Start the animation from the right
+                                                const end = Offset
+                                                    .zero; // End the animation at the center
+                                                const curve = Curves.easeInOut;
+
+                                                var tween = Tween(
+                                                        begin: begin, end: end)
+                                                    .chain(CurveTween(
+                                                        curve: curve));
+
+                                                var offsetAnimation =
+                                                    animation.drive(tween);
+
+                                                return SlideTransition(
+                                                  position: offsetAnimation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
                                         style: OutlinedButton.styleFrom(
@@ -427,12 +452,37 @@ class _BSelection extends State<BSelection> {
                                           75, 2, 0, 0),
                                       child: OutlinedButton(
                                         onPressed: () {
-                                          // Navigate to the next page when the button is pressed
+                                          // Navigate to the next page with a custom page transition
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BProfile1()),
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  BProfile1(),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                const begin = Offset(1.0,
+                                                    0.0); // Start the animation from the right
+                                                const end = Offset
+                                                    .zero; // End the animation at the center
+                                                const curve = Curves.easeInOut;
+
+                                                var tween = Tween(
+                                                        begin: begin, end: end)
+                                                    .chain(CurveTween(
+                                                        curve: curve));
+
+                                                var offsetAnimation =
+                                                    animation.drive(tween);
+
+                                                return SlideTransition(
+                                                  position: offsetAnimation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
                                         style: OutlinedButton.styleFrom(
@@ -652,12 +702,40 @@ class _BSelection extends State<BSelection> {
                                             75, 2, 0, 0),
                                         child: OutlinedButton(
                                           onPressed: () {
-                                            // Navigate to the next page when the button is pressed
+                                            // Navigate to the next page with a custom page transition
                                             Navigator.push(
                                               context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BProfile2()),
+                                              PageRouteBuilder(
+                                                pageBuilder: (context,
+                                                        animation,
+                                                        secondaryAnimation) =>
+                                                    BProfile2(),
+                                                transitionsBuilder: (context,
+                                                    animation,
+                                                    secondaryAnimation,
+                                                    child) {
+                                                  const begin = Offset(1.0,
+                                                      0.0); // Start the animation from the right
+                                                  const end = Offset
+                                                      .zero; // End the animation at the center
+                                                  const curve =
+                                                      Curves.easeInOut;
+
+                                                  var tween = Tween(
+                                                          begin: begin,
+                                                          end: end)
+                                                      .chain(CurveTween(
+                                                          curve: curve));
+
+                                                  var offsetAnimation =
+                                                      animation.drive(tween);
+
+                                                  return SlideTransition(
+                                                    position: offsetAnimation,
+                                                    child: child,
+                                                  );
+                                                },
+                                              ),
                                             );
                                           },
                                           style: OutlinedButton.styleFrom(
@@ -868,12 +946,37 @@ class _BSelection extends State<BSelection> {
                                           75, 2, 0, 0),
                                       child: OutlinedButton(
                                         onPressed: () {
-                                          // Navigate to the next page when the button is pressed
+                                          // Navigate to the next page with a custom page transition
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BProfile3()),
+                                            PageRouteBuilder(
+                                              pageBuilder: (context, animation,
+                                                      secondaryAnimation) =>
+                                                  BProfile3(),
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  secondaryAnimation,
+                                                  child) {
+                                                const begin = Offset(1.0,
+                                                    0.0); // Start the animation from the right
+                                                const end = Offset
+                                                    .zero; // End the animation at the center
+                                                const curve = Curves.easeInOut;
+
+                                                var tween = Tween(
+                                                        begin: begin, end: end)
+                                                    .chain(CurveTween(
+                                                        curve: curve));
+
+                                                var offsetAnimation =
+                                                    animation.drive(tween);
+
+                                                return SlideTransition(
+                                                  position: offsetAnimation,
+                                                  child: child,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
                                         style: OutlinedButton.styleFrom(

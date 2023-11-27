@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+//import 'package:latlong2/latlong.dart';
 
 class BBooking extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class BBooking extends StatefulWidget {
 class _BBookingState extends State<BBooking> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
-  LatLng? _selectedLocation;
+  //LatLng? _selectedLocation;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -39,7 +39,7 @@ class _BBookingState extends State<BBooking> {
       });
     }
   }
-
+/*
   Future<void> _selectLocation(BuildContext context) async {
     LatLng? selectedLatLng = await Navigator.push(
       context,
@@ -53,7 +53,7 @@ class _BBookingState extends State<BBooking> {
         _selectedLocation = selectedLatLng;
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +118,26 @@ class _BBookingState extends State<BBooking> {
               ],
             ),
             SizedBox(height: 10),
+            if (_selectedDate != null && _selectedTime != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Booking Summary:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Date: ${_selectedDate!.toLocal().toString().split(' ')[0]}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Time: ${_selectedTime!.format(context)}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            /*SizedBox(height: 10),
             ElevatedButton(
               onPressed: () => _selectLocation(context),
               child: Text(
@@ -156,7 +176,7 @@ class _BBookingState extends State<BBooking> {
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
-              ),
+              ),*/
             SizedBox(height: 20),
             // Add more details or input fields as needed
             TextField(
@@ -174,28 +194,33 @@ class _BBookingState extends State<BBooking> {
             ),
             SizedBox(height: 20),
             if (_selectedDate != null &&
-                _selectedTime != null &&
-                _selectedLocation != null)
-              ElevatedButton(
-                onPressed: () {
-                  // Add logic to confirm the booking and navigate to the next screen
-                  // For example, you can show a dialog or navigate to a confirmation page
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => ConfirmationPage(selectedDate: _selectedDate!, selectedTime: _selectedTime!),
-                  //   ),
-                  // );
-                },
-                child: Text(
-                  'Confirm Booking',
-                  style: TextStyle(
-                    color: Colors.black,
+                _selectedTime != null) //&&_selectedLocation != null)
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 170), // Adjust the top padding as needed
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Add logic to confirm the booking and navigate to the next screen
+                      // For example, you can show a dialog or navigate to a confirmation page
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ConfirmationPage(selectedDate: _selectedDate!, selectedTime: _selectedTime!),
+                      //   ),
+                      // );
+                    },
+                    child: Text(
+                      'Confirm Booking',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Color(0xFFFFD700)),
+                    ),
                   ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Color(0xFFFFD700)),
                 ),
               ),
           ],
@@ -204,7 +229,7 @@ class _BBookingState extends State<BBooking> {
     );
   }
 }
-
+/*
 class MapScreen extends StatefulWidget {
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -254,5 +279,4 @@ class _MapScreenState extends State<MapScreen> {
         child: Icon(Icons.check),
       ),
     );
-  }
-}
+  }*/

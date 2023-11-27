@@ -1,57 +1,64 @@
 import 'package:flutter/material.dart';
+import 'BHistory.dart';
 
-void main() => runApp(MyApp());
+class BReview extends StatefulWidget {
+  final Function(bool) onFeedbackSubmitted;
 
-class MyApp extends StatelessWidget {
+  BReview({required this.onFeedbackSubmitted});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Grabarber Review',
-      theme: ThemeData(
-        // Use Roboto font for the entire app
-        textTheme: TextTheme(
-          bodyText1: TextStyle(fontFamily: 'Roboto'),
-          bodyText2: TextStyle(fontFamily: 'Roboto'),
-          headline6: TextStyle(fontFamily: 'Roboto'),
-        ),
-      ),
-      home: ReviewPage(),
-    );
-  }
+  _BReviewState createState() => _BReviewState();
 }
 
-class ReviewPage extends StatefulWidget {
-  @override
-  _ReviewPageState createState() => _ReviewPageState();
-}
-
-class _ReviewPageState extends State<ReviewPage> {
+class _BReviewState extends State<BReview> {
   double _rating = 0;
   TextEditingController _feedbackController = TextEditingController();
 
   void _submitFeedback() {
-    // Save feedback and rating (You can replace this with your own logic)
-    String feedback = _feedbackController.text;
-    // Perform any necessary operations with the feedback and rating
+    // Check if the feedback and rating are valid
+    if (_feedbackController.text.isEmpty || _rating == 0) {
+      // Show an error dialog if either the feedback or rating is missing
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(
+                'Please provide both feedback and rating before submitting.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      String feedback = _feedbackController.text;
 
-    // Show a confirmation dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Feedback Submitted'),
-          content: Text('Thank you for your feedback!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+      widget.onFeedbackSubmitted(true);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Feedback Submitted'),
+            content: Text('Thank you for your feedback!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -59,13 +66,21 @@ class _ReviewPageState extends State<ReviewPage> {
     return Scaffold(
       backgroundColor: Color(0xFFE0E0E0),
       appBar: AppBar(
-        title: Text('Grabarber'),
-        backgroundColor: Color(0xFF212121), // Set the app bar color here
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            // Handle menu button press
-          },
+        backgroundColor: Color(0xFF212121),
+        title: const Text("Leave a Review"),
+        leading: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+          child: IconButton(
+            onPressed: () {
+              // Navigate to the previous page when the button is pressed
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -74,25 +89,9 @@ class _ReviewPageState extends State<ReviewPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // "Leave a Review" Text
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Leave a Review',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-            ),
-
             SizedBox(height: 10.0),
-
-            // Barber Face Image (Replace the placeholder URL)
             ClipRRect(
-              borderRadius: BorderRadius.circular(
-                  75), // 75 is half of the width and height
+              borderRadius: BorderRadius.circular(75),
               child: Image.network(
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT09K5SeZzDHyVBMJvl_SUYVLIdoej609EkqoP6TyT6j2CC4WTSRImm3d_afsHpQibk3uY&usqp=CAU',
                 width: 150,
@@ -101,19 +100,15 @@ class _ReviewPageState extends State<ReviewPage> {
               ),
             ),
             SizedBox(height: 10.0),
-
-            // Name Text
             Text(
               'Kurt Cobain',
               style: TextStyle(
-                color: Colors.black, // Set text color
+                color: Colors.black,
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 20.0),
-
-            // Star Rating
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(5, (index) {
@@ -123,7 +118,7 @@ class _ReviewPageState extends State<ReviewPage> {
                         ? Icons.star
                         : Icons.star_border,
                     color: Colors.amber,
-                    size: 36.0, // Set the size of the star icons
+                    size: 36.0,
                   ),
                   onPressed: () {
                     setState(() {
@@ -133,33 +128,27 @@ class _ReviewPageState extends State<ReviewPage> {
                 );
               }),
             ),
-
             SizedBox(height: 20.0),
-
-            // Feedback Text Field
             TextField(
               controller: _feedbackController,
-              style: TextStyle(color: Colors.black), // Set text color to black
+              style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 hintText: 'Write your feedback...',
                 border: OutlineInputBorder(),
                 filled: true,
-                fillColor: Colors.white, // Set background color to white
+                fillColor: Colors.white,
               ),
               maxLines: 5,
-              maxLength: 100, // Set the character limit
+              maxLength: 100,
             ),
-
             SizedBox(height: 20.0),
-
-            // Submit Feedback Button
             ElevatedButton(
               onPressed: () {
                 _submitFeedback();
               },
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFFFFD700), // Set button color to gold
-                minimumSize: Size(180, 60), // Set button size
+                primary: Color(0xFFFFD700),
+                minimumSize: Size(180, 60),
               ),
               child: Text(
                 'Submit Feedback',

@@ -3,6 +3,7 @@ import 'package:helloworld/signin.dart';
 import 'Homepage.dart';
 import 'auth_service.dart';
 import 'package:flutter/gestures.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -14,7 +15,10 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-      TextEditingController(); // Step 1
+      TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
 
   String _errorMessage = ""; // Added to store error message
 
@@ -22,7 +26,6 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       if (_passwordController.text != _confirmPasswordController.text) {
         // Check if passwords match
-        // You can display an error message or throw an exception
         setState(() {
           _errorMessage = "Passwords do not match";
         });
@@ -32,6 +35,10 @@ class _SignUpPageState extends State<SignUpPage> {
       await _authService.signUp(
         email: _emailController.text,
         password: _passwordController.text,
+      );
+
+      addUserDetails(
+        _firstNameController.text.trim(),
       );
 
       // Navigate to the Homepage with fade animation
@@ -66,6 +73,12 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  Future addUserDetails(String firstName) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'first name': firstName,
+    });
+  }
+
   bool _isPasswordVisible = false;
 
   @override
@@ -75,11 +88,48 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
+          //LOGO
+          /*Image.asset(
             'assets/GRABARBERWHITE.png',
             width: 300,
           ),
-          const SizedBox(height: 24.0),
+          const SizedBox(height: 24.0),*/
+          //FIRST NAME
+          Container(
+            width: 300,
+            child: TextFormField(
+              controller: _firstNameController,
+              style: const TextStyle(
+                color: Color(0xffffffff),
+              ),
+              decoration: const InputDecoration(
+                labelText: 'First Name',
+                labelStyle: TextStyle(
+                  color: Color(0xffffffff),
+                  fontSize: 14.0,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xffffffff),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0xffe3c5ad),
+                  ),
+                ),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.only(left: 4.0),
+                  child: Icon(
+                    Icons.person,
+                    color: Color(0xffffffff),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          //EMAIL
           Container(
             width: 300,
             child: TextFormField(
@@ -114,6 +164,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           const SizedBox(height: 16.0),
+          //PASSWORD
           Container(
             width: 300,
             child: TextFormField(
@@ -163,6 +214,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           const SizedBox(height: 16.0),
+          //CONFIRM PASSWORD
           Container(
             width: 300,
             child: TextFormField(
@@ -218,6 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
             style: TextStyle(color: Colors.red),
           ),
           const SizedBox(height: 5.0),
+          //SIGN UP BUTTON
           ElevatedButton(
             onPressed: _handleSignUp,
             child: const Text('Sign Up',

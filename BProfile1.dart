@@ -351,10 +351,32 @@ class _BProfile1 extends State<BProfile1> {
                               bottom: 10), // Added padding below the button
                           child: ElevatedButton(
                             onPressed: () {
+                              // Navigate to the next page with a custom page transition
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => BBooking(),
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      BBooking(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    const begin = Offset(1.0,
+                                        0.0); // Start the animation from the right
+                                    const end = Offset
+                                        .zero; // End the animation at the center
+                                    const curve = Curves.easeInOut;
+
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+
+                                    var offsetAnimation =
+                                        animation.drive(tween);
+
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
                                 ),
                               );
                             },
